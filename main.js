@@ -12,15 +12,21 @@ let perdiste
 
 function iniciar() {
 
-    if (cantidadMinas >= ancho * alto) {
-        alert('hay mas minas que cuadrados')
+    ancho = document.getElementById('ancho').value
+    alto = document.getElementById('alto').value
+    cantidadMinas = document.getElementById('minas').value
+    //console.log(`alto: ${alto} ancho: ${ancho} cantidadMinas ${cantidadMinas}`)
+    if (cantidadMinas=='' || alto=='' || ancho=='' || cantidadMinas=='0' || alto=='0' || ancho=='0') {
+        alert('Debe ingresar valores mayores a 0')
+        
+    } else if (cantidadMinas >= ancho * alto) {
+        alert('Hay mas minas que cuadrados')
+    } else if(ancho*alto>8000){
+        alert('No pueden haber mas de 8000 cuadrados')
     } else {
         perdiste = false
         primerClick = false
         descubiertos = 0
-        ancho = document.getElementById('ancho').value
-        alto = document.getElementById('alto').value
-        cantidadMinas = document.getElementById('minas').value
         minasRestantes = cantidadMinas
         actualizarContador()
         let divMenu = document.createElement('div')
@@ -52,8 +58,8 @@ function generateMinas(cantidad, ancho, alto, cordY, cordX) {
         let random = Math.floor(Math.random() * numeros.length)
         hayMinas[index] = numeros[random]
         numeros.splice(random, 1)
-        console.log(numeros.toString())
-        console.log(random)
+        //console.log(numeros.toString())
+        //console.log(random)
 
     }
     //console.log(hayMinas.toString())
@@ -203,7 +209,7 @@ function sale(e) {
 function descubrir(y, x) {
     //console.log('descubrir')
     if (!primerClick) {
-        console.log('entra primerclick')
+        //console.log('entra primerclick')
         minas = generateMinas(cantidadMinas, ancho, alto, y, x)
         primerClick = true
     }
@@ -230,7 +236,7 @@ function bloquear(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     cuadrado.innerText = '`'
     cuadrado.setAttribute('bloqueado', '')
-    console.log('bloqueando')
+    //console.log('bloqueando')
     minasRestantes--
     actualizarContador()
 }
@@ -238,14 +244,14 @@ function desbloquear(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     cuadrado.innerText = ''
     cuadrado.removeAttribute('bloqueado')
-    console.log('desbloqueando')
+    //console.log('desbloqueando')
     minasRestantes++
     actualizarContador()
 }
 
 
 function marcarAlrededor(y, x) {
-    console.log('marcarAlrededor')
+    //console.log('marcarAlrededor')
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) {
@@ -259,7 +265,7 @@ function marcarAlrededor(y, x) {
 }
 
 function desmarcarAlrededor(y, x) {
-    console.log('marcarAlrededor')
+    //console.log('marcarAlrededor')
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) {
@@ -299,7 +305,7 @@ function descubrirAlrededor(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     let numero = parseInt(cuadrado.innerText)
     numero = isNaN(numero) ? 0 : numero;
-    console.log(numero)
+    //console.log(numero)
     let contador = 0
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
@@ -308,7 +314,7 @@ function descubrirAlrededor(y, x) {
             }
         }
     }
-    console.log('contador:' + contador)
+    //console.log('contador:' + contador)
     if (contador == numero) {
         for (let indey = y - 1; indey < y + 2; indey++) {
             for (let index = x - 1; index < x + 2; index++) {
@@ -339,16 +345,17 @@ function ganar() {
     //reiniciar()
 }
 function perder() {
+    if(perdiste!=true){
     perdiste = true
     document.body.appendChild(createMensaje('Perdiste'))
     mostrarMinas()
-    //reiniciar()
+    }
 }
 function createMensaje(texto) {
     let mensaje = document.createElement('div')
     mensaje.classList.add('mensaje')
     mensaje.setAttribute('id', 'mensaje')
-    mensaje.setAttribute("onclick","reiniciar()")
+    mensaje.setAttribute("onclick", "reiniciar()")
     mensaje.innerHTML = texto
     return mensaje
 }
@@ -368,7 +375,7 @@ function actualizarContador() {
     document.getElementById('minasRestantes').innerText = minasRestantes
 }
 
-function reiniciar(){
+function reiniciar() {
     volverMenu()
     iniciar()
 }
