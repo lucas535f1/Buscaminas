@@ -8,6 +8,7 @@ let minasRestantes
 let descubiertos
 let primerClick
 let perdiste
+let ganaste
 
 
 function iniciar() {
@@ -16,15 +17,16 @@ function iniciar() {
     alto = document.getElementById('alto').value
     cantidadMinas = document.getElementById('minas').value
     //console.log(`alto: ${alto} ancho: ${ancho} cantidadMinas ${cantidadMinas}`)
-    if (cantidadMinas=='' || alto=='' || ancho=='' || cantidadMinas=='0' || alto=='0' || ancho=='0') {
+    if (cantidadMinas == '' || alto == '' || ancho == '' || cantidadMinas == '0' || alto == '0' || ancho == '0') {
         alert('Debe ingresar valores mayores a 0')
-        
+
     } else if (cantidadMinas >= ancho * alto) {
         alert('Hay mas minas que cuadrados')
-    } else if(ancho*alto>8000){
+    } else if (ancho * alto > 8000) {
         alert('No pueden haber mas de 8000 cuadrados')
     } else {
         perdiste = false
+        ganaste = false
         primerClick = false
         descubiertos = 0
         minasRestantes = cantidadMinas
@@ -115,22 +117,22 @@ function generateCuadrados(ancho, alto) {
 }
 
 
-function izquierdo(e) {
-    e.preventDefault()
-    //console.log(e)
-    //console.log('izquierdo')
-    let cuadrado = e.srcElement
-    //console.log(cuadrado)
-    y = parseInt(cuadrado.getAttribute('yCord'))
-    x = parseInt(cuadrado.getAttribute('xCord'))
-    if (!cuadrado.hasAttribute('descubierto') && !cuadrado.hasAttribute('bloqueado')) {
-        //console.log('entra a descubrir' + y + ' ' + x)
-        descubrir(y, x)
-    } else if (cuadrado.hasAttribute('descubierto')) {
-        //console.log('entra a descubrirAlrededor' + y + ' ' + x)
-        descubrirAlrededor(y, x)
-    }
-}
+// function izquierdo(e) {
+//     e.preventDefault()
+//     //console.log(e)
+//     //console.log('izquierdo')
+//     let cuadrado = e.srcElement
+//     //console.log(cuadrado)
+//     y = parseInt(cuadrado.getAttribute('yCord'))
+//     x = parseInt(cuadrado.getAttribute('xCord'))
+//     if (!cuadrado.hasAttribute('descubierto') && !cuadrado.hasAttribute('bloqueado')) {
+//         //console.log('entra a descubrir' + y + ' ' + x)
+//         descubrir(y, x)
+//     } else if (cuadrado.hasAttribute('descubierto')) {
+//         //console.log('entra a descubrirAlrededor' + y + ' ' + x)
+//         descubrirAlrededor(y, x)
+//     }
+// }
 function bloquearMenu(e) {
     e.preventDefault()
     //console.log('bloquear')
@@ -153,6 +155,7 @@ function bloquearMenu(e) {
 // }
 
 function entra(e) {
+    if (perdiste || ganaste) return;
     //console.log('entra')
     //console.log(e)
     let cuadrado = e.srcElement
@@ -178,6 +181,7 @@ function entra(e) {
 }
 
 function sale(e) {
+    if (perdiste || ganaste) return;
     e.preventDefault()
     //console.log('sale')
     //console.log(e)
@@ -333,23 +337,35 @@ function mostrarMinas() {
     for (let y = 0; y < alto; y++) {
         for (let x = 0; x < ancho; x++) {
             if (minas[y][x]) {
-                document.getElementById(y + '-' + x).setAttribute('class', 'cuadrado mina')
+                cuadrado = document.getElementById(y + '-' + x)
+                if (!cuadrado.hasAttribute('bloqueado')) {
+                    cuadrado.setAttribute('class', 'cuadrado mina')
+                }
             }
         }
     }
 }
+function descurbirBanderas() {
+    let banderas = document.querySelectorAll('[bloqueado]');
+    banderas.forEach(bandera => {
+        let y = bandera.getAttribute('ycord');
+        let x = bandera.getAttribute('xcord');
+        if (!minas[y][x]) {
+            bandera.innerHTML = 'X'
+            bandera.classList.add('fallo')
+        }
+    });
+}
 function ganar() {
     mostrarMinas()
     document.body.appendChild(createMensaje('Ganaste'))
-
-    //reiniciar()
+    perdiste = true
 }
 function perder() {
-    if(perdiste!=true){
     perdiste = true
     document.body.appendChild(createMensaje('Perdiste'))
     mostrarMinas()
-    }
+    descurbirBanderas()
 }
 function createMensaje(texto) {
     let mensaje = document.createElement('div')

@@ -230,3 +230,7 @@ input[type=number] { -moz-appearance:textfield; }
   justify-content: space-between;
   flex-direction: column;
 }
+
+.fallo{
+  color: #FF0000 !important; 
+}
