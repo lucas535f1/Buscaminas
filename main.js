@@ -212,6 +212,7 @@ function sale(e) {
 
 function descubrir(y, x) {
     //console.log('descubrir')
+    if(perdiste) return;
     if (!primerClick) {
         //console.log('entra primerclick')
         minas = generateMinas(cantidadMinas, ancho, alto, y, x)
