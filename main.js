@@ -7,7 +7,7 @@ let cantidadMinas
 let minasRestantes
 let descubiertos
 let primerClick
-let perdiste
+let finalizo
 //let ganaste
 
 
@@ -25,7 +25,7 @@ function iniciar() {
         alert('No pueden haber mas de 8000 cuadrados')
     } else {
         //Reseteo los valores e inicializo el tablero
-        perdiste = false
+        finalizo = false
         //ganaste = false
         primerClick = false
         descubiertos = 0
@@ -118,7 +118,7 @@ function bloquearMenu(e) {
 
 function entra(e) {
     //Si el juego finalizo sale
-    if (perdiste /*|| ganaste*/) return;
+    if (finalizo /*|| ganaste*/) return;
     //Obtengo el cuadrado y sus coordenadas
     let cuadrado = e.srcElement
     y = parseInt(cuadrado.getAttribute('yCord'))
@@ -145,7 +145,7 @@ function entra(e) {
 
 function sale(e) {
     //Si el juego finalizo sale
-    if (perdiste /*|| ganaste*/) return;
+    if (finalizo /*|| ganaste*/) return;
     //Obtengo el cuadrado y sus coordenadas
     let cuadrado = e.srcElement
     y = parseInt(cuadrado.getAttribute('yCord'))
@@ -172,7 +172,7 @@ function sale(e) {
 }
 
 function descubrir(y, x) {
-    if(perdiste) return;
+    if(finalizo) return;
     //Si es el primer click genero las minas
     if (!primerClick) {
         //console.log('entra primerclick')
@@ -191,7 +191,7 @@ function descubrir(y, x) {
         cuadrado.setAttribute('descubierto', '')
         cuadrado.classList.add('vacio')
         //Si descubriste todos los cuadrados ganaste
-        if (descubiertos == ancho * alto - cantidadMinas && !perdiste) {
+        if (descubiertos == ancho * alto - cantidadMinas && !finalizo) {
             ganar()
         }
         //Se calcula y pone el numero en cuadrado
@@ -330,10 +330,10 @@ function descurbirBanderas() {
 function ganar() {
     mostrarMinas()
     document.body.appendChild(createMensaje('Ganaste'))
-    perdiste = true
+    finalizo = true
 }
 function perder() {
-    perdiste = true
+    finalizo = true
     document.body.appendChild(createMensaje('Perdist'))
     mostrarMinas()
     descurbirBanderas()
