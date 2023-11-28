@@ -8,25 +8,25 @@ let minasRestantes
 let descubiertos
 let primerClick
 let perdiste
-let ganaste
+//let ganaste
 
 
 function iniciar() {
-
+    //Tomo los valores ingresados
     ancho = document.getElementById('ancho').value
     alto = document.getElementById('alto').value
     cantidadMinas = document.getElementById('minas').value
-    //console.log(`alto: ${alto} ancho: ${ancho} cantidadMinas ${cantidadMinas}`)
+    //Compruebo que sean validos
     if (cantidadMinas == '' || alto == '' || ancho == '' || cantidadMinas == '0' || alto == '0' || ancho == '0') {
         alert('Debe ingresar valores mayores a 0')
-
     } else if (cantidadMinas >= ancho * alto) {
         alert('Hay mas minas que cuadrados')
     } else if (ancho * alto > 8000) {
         alert('No pueden haber mas de 8000 cuadrados')
     } else {
+        //Reseteo los valores e inicializo el tablero
         perdiste = false
-        ganaste = false
+        //ganaste = false
         primerClick = false
         descubiertos = 0
         minasRestantes = cantidadMinas
@@ -44,28 +44,24 @@ function iniciar() {
 }
 function generateMinas(cantidad, ancho, alto, cordY, cordX) {
 
+    //genero un array con todos los numeros
     let numeros = []
-    // console.log(cordY)
-    // console.log(cordX)
-    let nroCuadrado = (cordY * ancho) + (cordX % ancho)
-    //console.log("Nro=" + nroCuadrado)
     for (let index = 0; index < ancho * alto; index++) {
         numeros[index] = index
     }
+    //Calculo el nro de cuadrado donde no quiero se generen minas
+    let nroCuadrado = (cordY * ancho) + (cordX % ancho)
+    //Elimino el cuadrado del array
     numeros.splice(nroCuadrado, 1)
-    //console.log(numeros.toString())
 
     let hayMinas = [];
+    //Saco aleatoriamente numeros del array de los cuadrados y los pongo en el aray hay minas
     for (let index = 0; index < cantidad; index++) {
         let random = Math.floor(Math.random() * numeros.length)
         hayMinas[index] = numeros[random]
         numeros.splice(random, 1)
-        //console.log(numeros.toString())
-        //console.log(random)
-
     }
-    //console.log(hayMinas.toString())
-
+    //Creo una matriz que representa cada cuadrado 
     let minas = []
     for (let y = 0; y < alto; y++) {
         minas[y] = [];
@@ -74,16 +70,13 @@ function generateMinas(cantidad, ancho, alto, cordY, cordX) {
         }
 
     }
-    //console.log(minas)
-
+    //Para cada cuadrado que tiene minas calculo sus coordenadas y los marco en la matriz minas
     hayMinas.forEach(element => {
         let y = Math.floor(element / ancho)
         let x = element % ancho
         minas[y][x] = true
-        //console.log(element + " x=" + x + " y=" + y)
     });
 
-    //console.log(minas)
     return (minas)
 }
 
@@ -99,14 +92,15 @@ function generateGrid(ancho, alto) {
 function generateCuadrados(ancho, alto) {
     for (let y = 0; y < alto; y++) {
         for (let x = 0; x < ancho; x++) {
+            //Creo el cuadrado
             let cuadrado = document.createElement('div')
             cuadrado.setAttribute('class', 'cuadrado cubierto')
             cuadrado.setAttribute('id', y + '-' + x)
             cuadrado.setAttribute('yCord', y)
             cuadrado.setAttribute('xCord', x)
-
+            //Inserto el cuadrado en la grid
             document.getElementById('grid').appendChild(cuadrado)
-
+            //Añado aventListeners al cuadrado
             cuadrado.addEventListener('contextmenu', bloquearMenu)
             cuadrado.addEventListener('mousedown', entra)
             cuadrado.addEventListener('mouseover', entra)
@@ -116,52 +110,21 @@ function generateCuadrados(ancho, alto) {
     }
 }
 
-
-// function izquierdo(e) {
-//     e.preventDefault()
-//     //console.log(e)
-//     //console.log('izquierdo')
-//     let cuadrado = e.srcElement
-//     //console.log(cuadrado)
-//     y = parseInt(cuadrado.getAttribute('yCord'))
-//     x = parseInt(cuadrado.getAttribute('xCord'))
-//     if (!cuadrado.hasAttribute('descubierto') && !cuadrado.hasAttribute('bloqueado')) {
-//         //console.log('entra a descubrir' + y + ' ' + x)
-//         descubrir(y, x)
-//     } else if (cuadrado.hasAttribute('descubierto')) {
-//         //console.log('entra a descubrirAlrededor' + y + ' ' + x)
-//         descubrirAlrededor(y, x)
-//     }
-// }
 function bloquearMenu(e) {
     e.preventDefault()
     //console.log('bloquear')
 }
 
-// function derecho(e) {
-//     e.preventDefault()
-//     console.log('derecho')
-//     let cuadrado = e.srcElement
-//     y = parseInt(cuadrado.getAttribute('yCord'))
-//     x = parseInt(cuadrado.getAttribute('xCord'))
-//     if (!cuadrado.hasAttribute('descubierto')) {
-//         if (cuadrado.hasAttribute('bloqueado')) {
-//             desbloquear(y, x)
-//         } else {
-//             bloquear(y, x)
-//         }
-
-//     }
-// }
 
 function entra(e) {
-    if (perdiste || ganaste) return;
-    //console.log('entra')
-    //console.log(e)
+    //Si el juego finalizo sale
+    if (perdiste /*|| ganaste*/) return;
+    //Obtengo el cuadrado y sus coordenadas
     let cuadrado = e.srcElement
     y = parseInt(cuadrado.getAttribute('yCord'))
     x = parseInt(cuadrado.getAttribute('xCord'))
 
+    //Click derecho sobre un cuadrado cubierto
     if (e.buttons === 2 && e.type === "mousedown" && !cuadrado.hasAttribute('descubierto')) {
         if (cuadrado.hasAttribute('bloqueado')) {
             desbloquear(y, x)
@@ -170,7 +133,7 @@ function entra(e) {
         }
 
     }
-
+    //Click izquierdo sobre un cuadrado no bloqueado
     if (!cuadrado.hasAttribute('bloqueado') && e.buttons === 1) {
         if (cuadrado.hasAttribute('descubierto')) {
             marcarAlrededor(y, x)
@@ -181,14 +144,14 @@ function entra(e) {
 }
 
 function sale(e) {
-    if (perdiste || ganaste) return;
-    e.preventDefault()
-    //console.log('sale')
-    //console.log(e)
+    //Si el juego finalizo sale
+    if (perdiste /*|| ganaste*/) return;
+    //Obtengo el cuadrado y sus coordenadas
     let cuadrado = e.srcElement
     y = parseInt(cuadrado.getAttribute('yCord'))
     x = parseInt(cuadrado.getAttribute('xCord'))
 
+    //Al dejar se hacer click sobre un cuadrado desbloqueado se desmarca
     if (!cuadrado.hasAttribute('bloqueado')) {
         if (cuadrado.hasAttribute('descubierto')) {
             desmarcarAlrededor(y, x)
@@ -196,14 +159,12 @@ function sale(e) {
             cuadrado.removeAttribute('hold', '')
         }
     }
-
+    //Si se levanta el click izquierdo sobre el cuadrado se descubre
     if (e.type === 'mouseup' && e.which === 1) {
         if (!cuadrado.hasAttribute('descubierto') && !cuadrado.hasAttribute('bloqueado')) {
-            ///console.log('entra a descubrir' + y + ' ' + x)
             descubrir(y, x)
         }
         else if (cuadrado.hasAttribute('descubierto')) {
-            //console.log('entra a descubrirAlrededor' + y + ' ' + x)
             descubrirAlrededor(y, x)
         }
     }
@@ -211,14 +172,17 @@ function sale(e) {
 }
 
 function descubrir(y, x) {
-    //console.log('descubrir')
     if(perdiste) return;
+    //Si es el primer click genero las minas
     if (!primerClick) {
         //console.log('entra primerclick')
         minas = generateMinas(cantidadMinas, ancho, alto, y, x)
         primerClick = true
     }
+    //Obtengo el cuadrado
     let cuadrado = document.getElementById(y + '-' + x)
+    //Si en el cuadrado hay una mina perdist
+
     if (minas[y][x]) {
         perder()
         cuadrado.classList.add('mina-click')
@@ -226,9 +190,11 @@ function descubrir(y, x) {
         descubiertos++
         cuadrado.setAttribute('descubierto', '')
         cuadrado.classList.add('vacio')
+        //Si descubriste todos los cuadrados ganaste
         if (descubiertos == ancho * alto - cantidadMinas && !perdiste) {
             ganar()
         }
+        //Se calcula y pone el numero en cuadrado
         let numero = contarAlrededor(y, x)
         cuadrado.innerText = numero
         if (numero !== '') {
@@ -241,7 +207,6 @@ function bloquear(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     cuadrado.innerText = '`'
     cuadrado.setAttribute('bloqueado', '')
-    //console.log('bloqueando')
     minasRestantes--
     actualizarContador()
 }
@@ -249,16 +214,16 @@ function desbloquear(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     cuadrado.innerText = ''
     cuadrado.removeAttribute('bloqueado')
-    //console.log('desbloqueando')
     minasRestantes++
     actualizarContador()
 }
 
 
 function marcarAlrededor(y, x) {
-    //console.log('marcarAlrededor')
+    //Recorro los cuadrados de alrededor del cuadrado
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
+            //Si el cuadrado existe y no esta bloqueado o descubierto lo marco
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) {
                 let cuadrado = document.getElementById(indey + '-' + index)
                 if (!cuadrado.hasAttribute('bloqueado') && !cuadrado.hasAttribute('descubierto')) {
@@ -270,9 +235,10 @@ function marcarAlrededor(y, x) {
 }
 
 function desmarcarAlrededor(y, x) {
-    //console.log('marcarAlrededor')
+    //Recorro los cuadrados de alrededor del cuadrado
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
+            //Si el cuadrado existe y no esta bloqueado o descubierto lo marco
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) {
                 let cuadrado = document.getElementById(indey + '-' + index)
                 if (!cuadrado.hasAttribute('bloqueado') && !cuadrado.hasAttribute('descubierto')) {
@@ -285,12 +251,13 @@ function desmarcarAlrededor(y, x) {
 
 function contarAlrededor(y, x) {
     let contador = 0
+    //Recorro los cuadrados de alrededor del cuadrado y cuento cuantas minas hay
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) contador += minas[indey][index];
         }
     }
-    //console.log('contador:' + contador)
+    //Si no hay minas descubro los cuadrados de alrededor que no esten bloqueados o descubiertos
     if (contador == 0) {
         for (let indey = y - 1; indey < y + 2; indey++) {
             for (let index = x - 1; index < x + 2; index++) {
@@ -310,8 +277,8 @@ function descubrirAlrededor(y, x) {
     let cuadrado = document.getElementById(y + '-' + x)
     let numero = parseInt(cuadrado.innerText)
     numero = isNaN(numero) ? 0 : numero;
-    //console.log(numero)
     let contador = 0
+    //Cuento cuantas cuadrados bloqueados hay alrededor del cuadrado
     for (let indey = y - 1; indey < y + 2; indey++) {
         for (let index = x - 1; index < x + 2; index++) {
             if (minas[indey] != undefined) if (minas[indey][index] != undefined) {
@@ -319,7 +286,7 @@ function descubrirAlrededor(y, x) {
             }
         }
     }
-    //console.log('contador:' + contador)
+    //Si coincide el numero del cuadrado con los cuadrados de alrededor bloqueados descubro los que no estan bloqueados
     if (contador == numero) {
         for (let indey = y - 1; indey < y + 2; indey++) {
             for (let index = x - 1; index < x + 2; index++) {
@@ -335,6 +302,7 @@ function descubrirAlrededor(y, x) {
 }
 
 function mostrarMinas() {
+    //Recorro todas las minas y muestro las que no estan bloqueadas
     for (let y = 0; y < alto; y++) {
         for (let x = 0; x < ancho; x++) {
             if (minas[y][x]) {
@@ -347,10 +315,12 @@ function mostrarMinas() {
     }
 }
 function descurbirBanderas() {
+    //Busco todas los cuadrados bloqueados
     let banderas = document.querySelectorAll('[bloqueado]');
     banderas.forEach(bandera => {
         let y = bandera.getAttribute('ycord');
         let x = bandera.getAttribute('xcord');
+        //Marco los que estan bloqueados pero no tieen minas
         if (!minas[y][x]) {
             bandera.innerHTML = 'X'
             bandera.classList.add('fallo')
@@ -364,7 +334,7 @@ function ganar() {
 }
 function perder() {
     perdiste = true
-    document.body.appendChild(createMensaje('Perdiste'))
+    document.body.appendChild(createMensaje('Perdist'))
     mostrarMinas()
     descurbirBanderas()
 }
