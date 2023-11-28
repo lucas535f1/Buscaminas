@@ -181,7 +181,7 @@ function descubrir(y, x) {
     }
     //Obtengo el cuadrado
     let cuadrado = document.getElementById(y + '-' + x)
-    //Si en el cuadrado hay una mina perdist
+    //Si en el cuadrado hay una mina perdiste
 
     if (minas[y][x]) {
         perder()
@@ -334,7 +334,7 @@ function ganar() {
 }
 function perder() {
     finalizo = true
-    document.body.appendChild(createMensaje('Perdist'))
+    document.body.appendChild(createMensaje('perdiste'))
     mostrarMinas()
     descurbirBanderas()
 }
@@ -344,7 +344,8 @@ function createMensaje(texto) {
     mensaje.setAttribute('id', 'mensaje')
     mensaje.setAttribute("onclick", "reiniciar()")
     mensaje.innerHTML = texto
-    return mensaje
+    return mensaje 
+    
 }
 
 function volverMenu() {
