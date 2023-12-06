@@ -1,4 +1,5 @@
 let menu = document.getElementById('menu')
+let contador = document.getElementById('contador')
 let grid
 let ancho
 let alto
@@ -40,6 +41,7 @@ function iniciar() {
         menu.remove()
         generateGrid(ancho, alto)
         generateCuadrados(ancho, alto)
+        contador.style=''
     }
 }
 function generateMinas(cantidad, ancho, alto, cordY, cordX) {
@@ -352,6 +354,7 @@ function volverMenu() {
     if (document.getElementById('mensaje') != undefined) {
         document.getElementById('mensaje').remove()
     }
+    contador.style.display='none';
     document.getElementById('divMenu').remove()
     grid.remove()
     minasRestantes = '*'
