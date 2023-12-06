@@ -12,9 +12,9 @@
 body {
   width: 100vw;
   height: 100vh;
-  display: flex;
+  /*display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;*/
   background-color: #424242;
   flex-direction: column;
 }
@@ -39,6 +39,10 @@ body {
 
 .grid {
   display: grid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .mina {
@@ -109,6 +113,8 @@ body {
 .mensaje {
   position: fixed;
   top: 20px;
+  left: 50%;
+  transform: translate(-50%);
   padding: 20px;
   background-color: gray;
   border: transparent solid 3px;
@@ -117,12 +123,13 @@ body {
 
 .menu {
   position: fixed;
-  top: 20px;
   right: 20px;
+  top: 20px;
   padding: 20px;
   background-color: gray;
   border: transparent solid 3px; 
   cursor: pointer;
+  
 }
 
 .menu:hover, .mensaje:hover{
@@ -161,6 +168,7 @@ svg {
   transform: scale(1.5);
 }
 
+
 a {
   text-decoration: none;
   color: white;
@@ -174,12 +182,32 @@ a:hover h3 svg {
   fill: rgb(255, 65, 65);
 }
 
-input {
+label{
+  font-size: 1.7rem;
+}
+
+.form span{
+  font-size: 25px;
+  transform: translate(0, 31%);
+  position: relative;
+}
+
+.sizeInput {
   margin-left: .8rem;
   margin-right: .8rem;
-  width: 15rem;
+  width: 10rem;
+  font-size: 1.7rem;
   text-align: center;
 }
+
+.cantidadInput {
+  margin-top: .8rem;
+  margin-left: .8rem;
+  width: 10rem;
+  font-size: 1.7rem;
+  text-align: center;
+}
+
 button:focus,input:focus{
   background-color: rgb(255, 65, 65);
   border-top: 2px solid transparent;
@@ -194,7 +222,6 @@ button:focus,input:focus{
   color: rgb(49, 49, 49);
 } 
 
-
 .form {
   display: flex;
   justify-content: center;
@@ -208,8 +235,10 @@ button:focus,input:focus{
 .iniciar{
   margin: auto;
   margin-top: 2rem;
-  width: 10rem;
-  height: 2rem;
+  /* width: 12rem;
+  height: 2rem; */
+  padding: .5rem;
+  font-size: 1.5rem;
 }
 
 .iniciar:hover{
@@ -226,7 +255,7 @@ input[type=number] { -moz-appearance:textfield; }
 
 #menu{
   height: 98vh;
-  display: inline-flex;
+  display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
@@ -234,3 +263,15 @@ input[type=number] { -moz-appearance:textfield; }
 .fallo{
   color: #FF0000 !important; 
 }
+
+
+@media (max-width: 750px) {
+  h1{
+    font-size: 8.5vw;
+  }
+  
+  h1::first-letter{
+    font-size: 9.78vw;
+  }
+}
+
