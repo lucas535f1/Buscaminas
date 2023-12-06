@@ -127,12 +127,13 @@ body {
   top: 20px;
   padding: 20px;
   background-color: gray;
-  border: transparent solid 3px; 
+  border: transparent solid 3px;
   cursor: pointer;
-  
+
 }
 
-.menu:hover, .mensaje:hover{
+.menu:hover,
+.mensaje:hover {
   background-color: rgb(255, 65, 65);
   border-top: 3px solid transparent;
   border-left: 3px solid transparent;
@@ -182,11 +183,11 @@ a:hover h3 svg {
   fill: rgb(255, 65, 65);
 }
 
-label{
+label {
   font-size: 1.7rem;
 }
 
-.form span{
+.form span {
   font-size: 25px;
   transform: translate(0, 31%);
   position: relative;
@@ -208,31 +209,32 @@ label{
   text-align: center;
 }
 
-button:focus,input:focus{
+button:focus,
+input:focus {
   background-color: rgb(255, 65, 65);
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
   border-bottom: 2px solid black;
   border-right: 2px solid black;
   outline: none;
-  
+
 }
 
- input:focus::placeholder{
+input:focus::placeholder {
   color: rgb(49, 49, 49);
-} 
+}
 
 .form {
   display: flex;
   justify-content: center;
 }
 
-.iniciarDiv{
+.iniciarDiv {
   display: flex;
   justify-content: center;
 }
 
-.iniciar{
+.iniciar {
   margin: auto;
   margin-top: 2rem;
   /* width: 12rem;
@@ -241,37 +243,64 @@ button:focus,input:focus{
   font-size: 1.5rem;
 }
 
-.iniciar:hover{
-  background-color: rgb(255, 65, 65);  
+.iniciar:hover {
+  background-color: rgb(255, 65, 65);
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-input[type=number] { -moz-appearance:textfield; }
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
-#menu{
+#menu {
   height: 98vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
 
-.fallo{
-  color: #FF0000 !important; 
+.fallo {
+  color: #FF0000 !important;
 }
 
 
 @media (max-width: 750px) {
-  h1{
+  h1 {
     font-size: 8.5vw;
   }
-  
-  h1::first-letter{
+
+  h1::first-letter {
     font-size: 9.78vw;
   }
 }
 
+@media (max-width: 400px) {
+  .form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .minaLabel{
+    display: none;
+    position: absolute;
+  }
+  .cantidadInput, input{
+    margin: 1rem 0;
+  }
+  .X{
+    display: none;
+  }
+
+  .contador{
+    width: 90;
+    left: 0;
+    text-align: center;
+    padding: 0 5vw;
+    font-size: 5vw;
+  }
+}
