@@ -86,9 +86,18 @@ function generateGrid(ancho, alto) {
     grid = document.createElement('div')
     grid.style.gridTemplateColumns = "repeat(" + ancho + ", 1fr)"
     grid.style.gridTemplateRows = "repeat(" + alto + ", 1fr)"
+    grid.style.height = `${alto*28}px`
+    grid.style.width = `${ancho*28}px`
     grid.setAttribute('id', 'grid')
     grid.setAttribute('class', 'grid')
-    document.body.appendChild(grid)
+
+    gridContainer = document.createElement('div')
+    gridContainer.setAttribute('id', 'grid-container')
+    gridContainer.setAttribute('class', 'grid-container')
+    document.body.appendChild(gridContainer)
+    gridContainer.appendChild(grid)
+
+    // document.body.appendChild(grid)
 }
 
 function generateCuadrados(ancho, alto) {
@@ -336,7 +345,7 @@ function ganar() {
 }
 function perder() {
     finalizo = true
-    document.body.appendChild(createMensaje('perdiste'))
+    document.body.appendChild(createMensaje('Perdiste'))
     mostrarMinas()
     descurbirBanderas()
 }
@@ -356,9 +365,8 @@ function volverMenu() {
     }
     contador.style.display='none';
     document.getElementById('divMenu').remove()
-    grid.remove()
-    minasRestantes = '*'
-    actualizarContador()
+    // grid.remove()
+    gridContainer.remove()
     document.body.appendChild(menu)
 }
 
